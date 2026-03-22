@@ -27,7 +27,7 @@ En **UvlAuth**, la clave privada es tratada como un recurso crítico. El sistema
 - **Red:** Interfaz JSON-RPC sobre HTTP (integración nativa con `curl`)
 - **Estándares:** ERC-8004 (Autonomous Agents) y x402 (HTTP Payments)
 
-## 🔧 Características (MVP Hackathon)
+## 🔧 Característica
 
 - [x] **Criptografía de Bajo Nivel**: Generación y firma ECDSA optimizada para procesadores de 32 bits.
 - [x] **Sandboxing Proactivo**: Implementación dual de `pledge` y `unveil` para seguridad post-explotación.
@@ -41,6 +41,7 @@ En **UvlAuth**, la clave privada es tratada como un recurso crítico. El sistema
 ├── src/
 │   ├── main.c          # Lógica de decisión y flujo del agente
 │   └── signer.c        # Motor criptográfico y manejo de LibreSSL
+│   └── check_balance.c        # Interactuar con el ecosistema Avalanche
 ├── lib/
 │   ├── signer.h        # Definiciones y estructuras de hardware
 ├── config.txt          # Parámetros de misión del agente
