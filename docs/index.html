@@ -177,6 +177,28 @@
         @keyframes blink { 50% { opacity: 0; } }
         .cursor { animation: blink 1s infinite; color: var(--accent); }
 
+        /* --- VIDEO SECTION --- */
+        .demo-video {
+            padding: 60px 0;
+            background: linear-gradient(180deg, var(--bg) 0%, #0f141d 100%);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            display: block;
+        }
+
         /* --- FEATURES --- */
         .features { padding: 80px 0; }
 
@@ -240,6 +262,7 @@
         <div class="container">
             <a href="#" class="logo">Uvl<span>Auth</span></a>
             <ul>
+                <li><a href="#demo">Demo</a></li>
                 <li><a href="#features">Tecnología</a></li>
                 <li><a href="#architecture">Arquitectura</a></li>
                 <li><a href="https://github.com/nerdemma/uvlauth" target="_blank" class="btn btn-outline">Repositorio</a></li>
@@ -255,7 +278,7 @@
                     <h1>Agentes Autónomos en Kernels Protegidos</h1>
                     <p>La primera implementación de un Agente ERC-8004 securizado por el sandbox nativo de OpenBSD. Optimizado para hardware legacy y la infraestructura de Avalanche.</p>
                     <div style="display: flex; gap: 16px;">
-                        <a href="#features" class="btn btn-primary">Explorar Tecnología</a>
+                        <a href="#demo" class="btn btn-primary">Ver Demo</a>
                         <a href="https://github.com/nerdemma/uvlauth" target="_blank" class="btn btn-outline">Ver Código</a>
                     </div>
                 </div>
@@ -280,6 +303,19 @@
             </div>
         </div>
     </header>
+
+    <section id="demo" class="demo-video">
+        <div class="container">
+            <span class="section-tag">Proof of Concept</span>
+            <h2 class="section-title">UvlAuth en Acción</h2>
+            <div class="video-wrapper">
+                <video controls poster="https://via.placeholder.com/1280x720/0b0e14/88c0d0?text=UvlAuth+Demo+Preview">
+                    <source src="demo.mp4" type="video/mp4">
+                    Tu navegador no soporta el tag de video.
+                </video>
+            </div>
+        </div>
+    </section>
 
     <section id="features" class="features">
         <div class="container">
@@ -318,7 +354,7 @@
                     </div>
                 </div>
                 <div class="arch-step">
-                    <div class="step-num 02">02.</div>
+                    <div class="step-num">02.</div>
                     <div>
                         <h3>Restricción de Operaciones (Pledge)</h3>
                         <p>Una vez conectado, el kernel bloquea cualquier intento de abrir nuevos archivos o ejecutar procesos, protegiendo las llaves privadas.</p>
