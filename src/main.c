@@ -4,6 +4,15 @@
 #include <unistd.h>
 #include "../lib/signer.h" 
 
+typedef struct
+{
+    char rpc_url[256];
+    char wallet_address[42];
+    float min_balance_threshold;
+
+};
+
+
 void agente_decidir(const char *json_response, const char *hex_sig) 
 {
 
