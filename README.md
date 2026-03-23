@@ -1,7 +1,7 @@
 <div align="center">
 
 
-<img src="./docs/logo.png" alt="UvlAuth Logo" width="120" height="120" />
+<img src="./docs/logo.png" alt="UvlAuth Logo" width="240" height="480" />
 
 <br/>
 
