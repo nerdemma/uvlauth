@@ -1,8 +1,8 @@
 <div align="center">
 
 
-<img src=".//prototipos/assets/logo.png" alt="UvlAuth Logo" width="340" height="480" />
 
+<img src=".//prototipos/assets/logo.png" alt="UvlAuth Logo" width="340" height="480" />
 <br/>
 
 
