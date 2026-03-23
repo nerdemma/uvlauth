@@ -2,106 +2,153 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "../lib/signer.h" 
+#include "../lib/signer.h"
 
 typedef struct
 {
     char rpc_url[256];
-    char wallet_address[42];
-    float min_balance_threshold;
-
+    char wallet[42];
+    float min_balance;
 };
 
+void cargar_config(Config *c)
+{
+    strcpy(c->rpc_url, "https://api.avax-test.network/ext/bc/C/rpc");
+    strcpy(c->wallet, "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC");
+    c->min_balance = 0.01;
+}
 
-void agente_decidir(const char *json_response, const char *hex_sig) 
+void agente_decidir(const char *json_response)
 {
 
     char *result_ptr = strstr(json_response, "\"result\":\"");
 
-    if (result_ptr) {
+    if (result_ptr)
+    {
 
-        if (strstr(result_ptr, "\"result\":\"0x0\"")) {
+        if (strstr(result_ptr, "\"result\":\"0x0\""))
+        {
             printf("\n[ AGENTE ] Estado: Saldo 0x0. Modo ahorro de energía activado...\n");
-        } 
+        }
 
-        else {
+        else
+        {
             printf("\n[ AGENTE ] Estado: Fondos detectados on-chain!\n");
-            printf("[ AGENTE ] Acción: Generando ticket de pago x402 para API de Cómputo...\n");
-            
+            printf("[ AGENTE ] Acción: Generando firma de pago x402 para API de Cómputo...\n");
 
             char *pago_sig = generar_cadena("PAGO_DE_SERVICIO_AVALANCHE_2026");
-            if (pago_sig) {
+            if (pago_sig)
+            {
                 printf("[ AGENTE ] ✅ Pago Autorizado. Hash de transacción local: 0x%s\n", pago_sig);
                 free(pago_sig);
             }
         }
-    } else {
+    }
+    else
+    {
         printf("\n[ AGENTE ] ❌ ERROR: Respuesta RPC inválida o malformada.\n");
     }
 }
 
-int main() {
-    const char *url = "https://api.avax-test.network/ext/bc/C/rpc";
-    
+int main()
+{
+    Config mi_config;
+    cargar_config(&mi_config);
 
-    char *hex_sig = generar_cadena("Aleph Hackathon 2026");
-    if (!hex_sig) {
-        fprintf(stderr, "Error crítico: Fallo en el motor criptográfico.\n");
-        return 1;
+    // --- SEGURIDAD OPENBSD ---
+    unveil("/usr/bin/curl", "x");
+    unveil("/etc/resolv.conf", "r");
+    unveil("/etc/ssl/cert.pem", "r");
+    unveil(NULL, NULL);
+
+    if (pledge("stdio rpath proc exec dns inet", NULL) == -1)
+    {
+        perror("pledge");
+        exit(1);
     }
 
+    printf("[ AGENTE ] Iniciando monitoreo para: %s\n", mi_config.wallet);
+
+    while (1)
+    {
+        char response[1024] = {0};
+        char command[1024];
+
+        snprintf(command, sizeof(command),
+                 "curl -s -X POST -H \"Content-Type: application/json\" "
+                 "-d '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"%s\", \"latest\"],\"id\":1}' %s",
+                 mi_config.wallet, mi_config.rpc_url);
+
+        printf("\n[ AGENTE ] Consultando balance...");
+
+        FILE *fp = popen(command, "r");
+        if (fp)
+        {
+            fgets(response, sizeof(response), fp);
+            pclose(fp);
+
+            printf("\n---- UvlAuth Agent System (ERC-8004 Logic) ----\n");
+            agente_decidir(response);
+        }
+        else
+        {
+            perror("popen");
+        }
+
+        printf("[ AGENTE ] Esperando 5 minutos para la próxima validación...\n");
+        sleep(300);
+    }
+
+    return 0;
+}
+
+int main()
+{
+    Config mi_config;
+    cargar_config(&mi_config);
 
     unveil("/usr/bin/curl", "x");
-    unveil("/usr/local/bin/curl", "x");
-    unveil("/bin/sh", "x");               
-    unveil("/usr/lib", "r");
-    unveil("/usr/local/lib", "r");
-    unveil("/usr/libexec/ld.so", "r");
-    unveil("/etc/ssl", "r");              
-    unveil("/etc/resolv.conf", "r");      
-    unveil("/etc/hosts", "r");
-    unveil(NULL, NULL);                   
+    unveil("/etc/resolv.conf", "r");
+    unveil("/etc/ssl/cert.pem", "r");
+    unveil(NULL, NULL);
 
-    
-    char data[512];
-    snprintf(data, sizeof(data),
-        "{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF52FC\", \"latest\"],\"id\":1}");
-
-    
-    if (pledge("stdio exec rpath proc inet dns", NULL) == -1) {
+    if (pledge("stdio rpath proc exec dns inet", NULL) == -1)
+    {
         perror("pledge");
-        free(hex_sig);
-        return -1;
+        exit(1);
     }
 
-    
-    char command[1024];
-    
-    snprintf(command, sizeof(command), "curl -k -s -X POST -H \"Content-Type: application/json\" -d '%s' %s", data, url);
+    printf("[ AGENTE ] Iniciando monitoreo para: %s\n", mi_config.wallet);
 
-    FILE *fp = popen(command, "r");
-    if (fp == NULL) {
-        perror("popen");
-        free(hex_sig);
-        return 1;
+    while (1)
+    {
+        char response[1024] = {0};
+        char command[1024];
+
+        snprintf(command, sizeof(command),
+                 "curl -s -X POST -H \"Content-Type: application/json\" "
+                 "-d '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getBalance\",\"params\":[\"%s\", \"latest\"],\"id\":1}' %s",
+                 mi_config.wallet, mi_config.rpc_url);
+
+        printf("\n[ AGENTE ] Consultando balance...");
+
+        FILE *fp = popen(command, "r");
+        if (fp)
+        {
+            fgets(response, sizeof(response), fp);
+            pclose(fp);
+
+            printf("\n---- UvlAuth Agent System (ERC-8004 Logic) ----\n");
+            agente_decidir(response);
+        }
+        else
+        {
+            perror("popen");
+        }
+
+        printf("[ AGENTE ] Esperando 5 minutos para la próxima validación...\n");
+        sleep(300);
     }
 
-    char response[2048]; 
-    memset(response, 0, sizeof(response));
-
-    if (fgets(response, sizeof(response), fp) == NULL) {
-        printf("[ ERROR ] No se recibió respuesta del nodo RPC.\n");
-    }
-
-    pclose(fp);
-
-
-    printf("\n---- UvlAuth Agent System (ERC-8004 Logic) ----\n");
-    printf("Respuesta RPC: %s\n", response);
-    
-    agente_decidir(response, hex_sig);
-
-
-    free(hex_sig);
     return 0;
 }
