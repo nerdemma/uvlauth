@@ -1,5 +1,5 @@
 <div align="center">
-<img src="logo.png" alt="UvlAuth Logo" width="340" height="48" />
+<img src="/doc/logo.png" alt="UvlAuth Logo" width="340" height="48" />
 <br/>
 
 
@@ -116,6 +116,7 @@ Avalanche/
 ├──docs/
 │   └── index.html           
 │   └── index.js
+│   └── logo.png
 ├──src/
 ├── main.c
 ├── signer.c
