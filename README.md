@@ -1,5 +1,5 @@
 <div align="center">
-<img src="/docs/logo.png" alt="UvlAuth Logo" width="340" height="48" />
+<img src="/docs/logo.png" alt="UvlAuth Logo" />
 <br/>
 
 
@@ -23,7 +23,7 @@
 </div>
 
 ---
-
+<img src="/docs/demo.png" alt="UvlAuth Demo" />
 ## 📖 Descripción General
 
 **UvlAuth** es un agente autónomo certificado bajo el estándar **ERC-8004** de alta seguridad, diseñado para ejecutarse en hardware restringido y entornos de misión crítica. Desarrollado íntegramente en **C** para la arquitectura **OpenBSD i386**, demuestra que el futuro de la identidad soberana y los pagos autónomos (**x402**) no requiere stacks pesados ni infraestructura cloud.
