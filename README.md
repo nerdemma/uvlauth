@@ -1,10 +1,6 @@
 <div align="center">
-
-
-
-<img src=".//prototipos/assets/logo.png" alt="UvlAuth Logo" width="340" height="480" />
+<img src="logo.png" alt="UvlAuth Logo" width="340" height="48" />
 <br/>
-
 
 
 **Agente Autónomo ERC-8004 · OpenBSD i386 · C Nativo**
@@ -54,7 +50,7 @@ En **UvlAuth**, la clave privada es tratada como un recurso absolutamente críti
 El agente aplica restricciones de visibilidad del sistema de archivos en tiempo de ejecución. Ningún vector de ataque puede leer archivos fuera del scope declarado, mitigando completamente ataques de lectura de archivos sensibles y escalada lateral.
 
 ```c
-unveil("/etc/uvlauth/config.txt", "r");
+unveil("/etc/uvlauth/uvlauth.conf", "r");
 unveil(NULL, NULL);  /* Congela el filesystem: nada más es visible */
 ```
 
@@ -110,18 +106,23 @@ La compilación vinculada estáticamente a **LibreSSL** garantiza que el binario
 ## 📁 Estructura del Proyecto
 
 ```text
-uvlauth/
-├── src/
-│   ├── main.c              # Lógica de decisión y flujo principal del agente
-│   ├── signer.c            # Motor criptográfico y manejo de LibreSSL
-│   └── check_balance.c     # Interacción con el ecosistema Avalanche
+Avalanche/
 ├── lib/
-│   └── signer.h            # Definiciones, estructuras y prototipos
-├── assets/
-│   └── logo.png            # Logo del proyecto
-├── config.txt              # Parámetros de misión del agente
-├── Makefile                # Sistema de construcción nativo BSD
-└── README.md               # Este archivo
+│   ├── signer.h 
+├──LibreSSL/
+│   └── check_balance.c
+├ Makefile
+├ README.md
+├──docs/
+│   └── index.html           
+│   └── index.js
+├──src/
+├── main.c
+├── signer.c
+│
+uvlauth.conf
+
+
 ```
 
 ---
