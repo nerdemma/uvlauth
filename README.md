@@ -1,5 +1,5 @@
 <div align="center">
-<img src="/doc/logo.png" alt="UvlAuth Logo" width="340" height="48" />
+<img src="/docs/logo.png" alt="UvlAuth Logo" width="340" height="48" />
 <br/>
 
 
